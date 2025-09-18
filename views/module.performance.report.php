@@ -12,7 +12,7 @@ $filter = (new CFilter())
 	->addFilterTab(_('Filter'), [
 		(new CFormGrid())
 			->addItem([
-				new CLabel(_('Host groups'), 'filter_groups__ms'),
+				new CLabel(_('Host group'), 'filter_groups__ms'),
 				new CFormField(
 					(new CMultiSelect([
 						'name' => 'filter_groups[]',
@@ -34,7 +34,7 @@ $filter = (new CFilter())
 				)
 			])
             ->addItem([
-                new CLabel(_('Hosts'), 'filter_hosts__ms'),
+                new CLabel(_('Host'), 'filter_hosts__ms'),
                 new CFormField(
                     (new CMultiSelect([
                         'name' => 'filter_hosts[]',
