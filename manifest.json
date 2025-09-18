@@ -1,0 +1,20 @@
+{
+    "manifest_version": 2.0,
+    "id": "performance_report",
+    "type": "module",
+    "name": "Performance report",
+    "version": "1.0",
+    "namespace": "PerformanceReport",
+    "author": "thinkc@outlook.com",
+    "description": "Performance report for monitored hosts.",
+    "actions": {
+        "performance.report": {
+            "class": "PerformanceReport",
+            "view": "module.performance.report"
+        },
+        "performance.detail": {
+            "class": "PerformanceDetail",
+            "view": "layout.performance.detail"
+        }
+    }
+}
