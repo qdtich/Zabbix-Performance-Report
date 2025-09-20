@@ -1,8 +1,18 @@
 <?php
 
 $this->addJsFile('class.calendar.js');
+$this->includeJsFile('host.export.js.php');
 
-$html_page = (new CHtmlPage())->setTitle(_('Performance report'));
+$html_page = (new CHtmlPage())
+    ->setTitle(_('Performance report'))
+    ->setControls(
+        (new CTag('nav', true, (new CList())
+            ->addItem(
+                (new CSimpleButton(_('Export')))->onClick('view.exportHost()')
+            )
+        ))
+        ->setAttribute('aria-label', _('Content controls'))
+    );
 
 $filter = (new CFilter())
 	->setResetUrl((new CUrl('zabbix.php'))->setArgument('action', 'performance.report'))
