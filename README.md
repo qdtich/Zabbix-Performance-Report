@@ -9,6 +9,6 @@ Installation steps
 5. On the "Reports" page, you can see the newly added "Performance report" menu, click to enter. Select the "Host group" or "Host" and click the 'Apply' button to generate report.
 6. Click the "Export" button in the upper right corner to export performance data to an Excel file.
 7. Enjoy it.
-<img width="1902" height="426" alt="image" src="https://github.com/user-attachments/assets/64f7f742-f3a3-4f13-851e-89580a54d5e4" />
-<img width="1907" height="488" alt="image" src="https://github.com/user-attachments/assets/ab789b5b-25cb-418a-a0d0-339b6a45753e" />
+<img width="1903" height="431" alt="image" src="https://github.com/user-attachments/assets/4907ed73-9cc1-496f-ad38-13af64c0d59d" />
+<img width="1902" height="499" alt="image" src="https://github.com/user-attachments/assets/a1cd19a6-1c05-474c-adb4-d6d6ff9e5782" />
 <img width="1717" height="162" alt="image" src="https://github.com/user-attachments/assets/84e7b254-79db-40e5-be04-76463221a58e" />
