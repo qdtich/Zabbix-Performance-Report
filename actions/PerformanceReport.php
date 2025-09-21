@@ -211,28 +211,28 @@ class PerformanceReport extends CController {
 
             if ($zbx_server_metrics['cpu_num'] > 1) {
                 if (($zbx_server_metrics['cpu_util_avg'] > 90) and ($zbx_server_metrics['cpu_load_max'] > $zbx_server_metrics['cpu_num'] * 2) and ($zbx_server_metrics['mem_util_max'] > 90)) {
-                    $zbx_server_metrics['analysis'] = 'Recommended to upgrade the CPU and memory.';
+                    $zbx_server_metrics['analysis'] = 'Recommended to upgrade the CPU\'s count and memory\'s size.';
                 }
                 elseif (($zbx_server_metrics['cpu_util_avg'] < 30) and ($zbx_server_metrics['cpu_load_max'] < $zbx_server_metrics['cpu_num']) and ($zbx_server_metrics['mem_util_max'] < 30)) {
-                    $zbx_server_metrics['analysis'] = 'Recommended to reduce the CPU and memory.';
+                    $zbx_server_metrics['analysis'] = 'Recommended to reduce the CPU\'s count and memory\'s size. Bare-metal host ignored.';
                 }
                 elseif (($zbx_server_metrics['cpu_util_avg'] > 90) and ($zbx_server_metrics['cpu_load_max'] > $zbx_server_metrics['cpu_num'] * 2) and ($zbx_server_metrics['mem_util_max'] < 90)) {
-                    $zbx_server_metrics['analysis'] = 'Recommended to upgrade the CPU.';
+                    $zbx_server_metrics['analysis'] = 'Recommended to upgrade the CPU\'s count.';
                 }
                 elseif (($zbx_server_metrics['cpu_util_avg'] < 90) and ($zbx_server_metrics['cpu_load_max'] > $zbx_server_metrics['cpu_num'] * 2) and ($zbx_server_metrics['mem_util_max'] < 90)) {
-                    $zbx_server_metrics['analysis'] = 'Recommended to upgrade the CPU.';
+                    $zbx_server_metrics['analysis'] = 'Recommended to upgrade the CPU\'s count.';
                 }
                 elseif (($zbx_server_metrics['cpu_util_avg'] < 30) and ($zbx_server_metrics['cpu_load_max'] < $zbx_server_metrics['cpu_num']) and ($zbx_server_metrics['mem_util_max'] < 90)) {
-                    $zbx_server_metrics['analysis'] = 'Recommended to reduce the CPU.';
+                    $zbx_server_metrics['analysis'] = 'Recommended to reduce the CPU\'s count. Bare-metal host ignored.';
                 }
                 elseif (($zbx_server_metrics['cpu_util_avg'] > 30) and ($zbx_server_metrics['cpu_load_max'] < $zbx_server_metrics['cpu_num'] * 2) and ($zbx_server_metrics['cpu_load_max'] > $zbx_server_metrics['cpu_num']) and ($zbx_server_metrics['mem_util_max'] > 90)) {
-                    $zbx_server_metrics['analysis'] = 'Recommended to upgrade the memory.';
+                    $zbx_server_metrics['analysis'] = 'Recommended to upgrade the memory\'s size.';
                 }
                 elseif (($zbx_server_metrics['cpu_util_avg'] > 30) and ($zbx_server_metrics['cpu_load_max'] < $zbx_server_metrics['cpu_num'] * 2) and ($zbx_server_metrics['cpu_load_max'] > $zbx_server_metrics['cpu_num']) and ($zbx_server_metrics['mem_util_max'] < 30)) {
-                    $zbx_server_metrics['analysis'] = 'Recommended to reduce the memory.';
+                    $zbx_server_metrics['analysis'] = 'Recommended to reduce the memory\'s size. Bare-metal host ignored.';
                 }
                 elseif (($zbx_server_metrics['cpu_util_avg'] < 30) and ($zbx_server_metrics['cpu_load_max'] < $zbx_server_metrics['cpu_num'] * 2) and ($zbx_server_metrics['cpu_load_max'] > $zbx_server_metrics['cpu_num']) and ($zbx_server_metrics['mem_util_max'] < 30)) {
-                    $zbx_server_metrics['analysis'] = 'Recommended to reduce the memory.';
+                    $zbx_server_metrics['analysis'] = 'Recommended to reduce the memory\'s size. Bare-metal host ignored.';
                 }
                 elseif (($zbx_server_metrics['cpu_util_avg'] < 90) and ($zbx_server_metrics['cpu_util_avg'] > 30) and ($zbx_server_metrics['cpu_load_max'] < $zbx_server_metrics['cpu_num'] * 2) and ($zbx_server_metrics['cpu_load_max'] > $zbx_server_metrics['cpu_num']) and ($zbx_server_metrics['mem_util_max'] < 90) and ($zbx_server_metrics['mem_util_max'] > 30)) {
                     $zbx_server_metrics['analysis'] = 'Health.';
@@ -240,28 +240,28 @@ class PerformanceReport extends CController {
             }
             else {
                 if (($zbx_server_metrics['cpu_util_avg'] > 90) and ($zbx_server_metrics['cpu_load_max'] > $zbx_server_metrics['cpu_num'] * 2) and ($zbx_server_metrics['mem_util_max'] > 90)) {
-                    $zbx_server_metrics['analysis'] = 'Recommended to upgrade the CPU and memory.';
+                    $zbx_server_metrics['analysis'] = 'Recommended to upgrade the CPU\'s count and memory\'s size.';
                 }
                 elseif (($zbx_server_metrics['cpu_util_avg'] < 30) and ($zbx_server_metrics['cpu_load_max'] < $zbx_server_metrics['cpu_num']) and ($zbx_server_metrics['mem_util_max'] < 30)) {
-                    $zbx_server_metrics['analysis'] = 'Recommended to reduce the memory.';
+                    $zbx_server_metrics['analysis'] = 'Recommended to reduce the memory\'s size. Bare-metal host ignored.';
                 }
                 elseif (($zbx_server_metrics['cpu_util_avg'] > 90) and ($zbx_server_metrics['cpu_load_max'] > $zbx_server_metrics['cpu_num'] * 2) and ($zbx_server_metrics['mem_util_max'] < 90)) {
-                    $zbx_server_metrics['analysis'] = 'Recommended to upgrade the CPU.';
+                    $zbx_server_metrics['analysis'] = 'Recommended to upgrade the CPU\'s count.';
                 }
                 elseif (($zbx_server_metrics['cpu_util_avg'] < 90) and ($zbx_server_metrics['cpu_load_max'] > $zbx_server_metrics['cpu_num'] * 2) and ($zbx_server_metrics['mem_util_max'] < 90)) {
-                    $zbx_server_metrics['analysis'] = 'Recommended to upgrade the CPU.';
+                    $zbx_server_metrics['analysis'] = 'Recommended to upgrade the CPU\'s count.';
                 }
                 elseif (($zbx_server_metrics['cpu_util_avg'] < 30) and ($zbx_server_metrics['cpu_load_max'] < $zbx_server_metrics['cpu_num']) and ($zbx_server_metrics['mem_util_max'] < 90)) {
                     $zbx_server_metrics['analysis'] = 'Health.';
                 }
                 elseif (($zbx_server_metrics['cpu_util_avg'] > 30) and ($zbx_server_metrics['cpu_load_max'] < $zbx_server_metrics['cpu_num'] * 2) and ($zbx_server_metrics['cpu_load_max'] > $zbx_server_metrics['cpu_num']) and ($zbx_server_metrics['mem_util_max'] > 90)) {
-                    $zbx_server_metrics['analysis'] = 'Recommended to upgrade the memory.';
+                    $zbx_server_metrics['analysis'] = 'Recommended to upgrade the memory\'s size.';
                 }
                 elseif (($zbx_server_metrics['cpu_util_avg'] > 30) and ($zbx_server_metrics['cpu_load_max'] < $zbx_server_metrics['cpu_num'] * 2) and ($zbx_server_metrics['cpu_load_max'] > $zbx_server_metrics['cpu_num']) and ($zbx_server_metrics['mem_util_max'] < 30)) {
-                    $zbx_server_metrics['analysis'] = 'Recommended to reduce the memory.';
+                    $zbx_server_metrics['analysis'] = 'Recommended to reduce the memory\'s size. Bare-metal host ignored.';
                 }
                 elseif (($zbx_server_metrics['cpu_util_avg'] < 30) and ($zbx_server_metrics['cpu_load_max'] < $zbx_server_metrics['cpu_num'] * 2) and ($zbx_server_metrics['cpu_load_max'] > $zbx_server_metrics['cpu_num']) and ($zbx_server_metrics['mem_util_max'] < 30)) {
-                    $zbx_server_metrics['analysis'] = 'Recommended to reduce the memory.';
+                    $zbx_server_metrics['analysis'] = 'Recommended to reduce the memory\'s size. Bare-metal host ignored.';
                 }
                 elseif (($zbx_server_metrics['cpu_util_avg'] < 90) and ($zbx_server_metrics['cpu_util_avg'] > 30) and ($zbx_server_metrics['cpu_load_max'] < $zbx_server_metrics['cpu_num'] * 2) and ($zbx_server_metrics['cpu_load_max'] > $zbx_server_metrics['cpu_num']) and ($zbx_server_metrics['mem_util_max'] < 90) and ($zbx_server_metrics['mem_util_max'] > 30)) {
                     $zbx_server_metrics['analysis'] = 'Health.';
