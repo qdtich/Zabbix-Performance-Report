@@ -3,7 +3,7 @@
     "id": "performance_report",
     "type": "module",
     "name": "Performance report",
-    "version": "1.1",
+    "version": "1.2",
     "namespace": "PerformanceReport",
     "author": "thinkc@outlook.com",
     "description": "Performance report for monitored hosts.",

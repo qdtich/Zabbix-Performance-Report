@@ -4,7 +4,7 @@ set_include_path( get_include_path().PATH_SEPARATOR."..");
 include_once("xlsxwriter.class.php");
 
 $writer = new XLSXWriter();
-header('Content-disposition:attachment; filename="' . XLSXWriter::sanitize_filename(strtolower(str_replace(' ', '_', $data['group_name']))) . '.xlsx"');
+header('Content-disposition:attachment; filename="zbx_performance_metric_' . date('Ymd') . '.xlsx"');
 header("Content-Type:application/vnd.openxmlformats-officedocument.spreadsheetml.sheet");
 header('Content-Transfer-Encoding:binary');
 header('Cache-Control:must-revalidate');
@@ -27,7 +27,7 @@ $header = array(
   'analysis'=>'@'
 );
 
-$sheet1 = strtolower($data['group_name']);
+$sheet1 = 'performance';
 
 $writer->writeSheetHeader($sheet1, $header, array_merge($header_styles, ['widths'=>[8,30,12,15,20,20,20,20,20,20,60]]));
 

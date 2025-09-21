@@ -9,7 +9,7 @@
             const url = new Curl('zabbix.php');
             url.setArgument('action', 'performance.export');
 
-            location.href = url.getUrl() + '&group=' + $('[data-params]').data('params').data[0].name.replace(" ", "__");
+            location.href = url.getUrl() + window.location.href.split('detail')[1];
 		}
     };
 </script>

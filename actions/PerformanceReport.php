@@ -4,7 +4,7 @@ declare(strict_types = 0);
 
 namespace Modules\PerformanceReport\Actions;
 
-use CController, CControllerResponseData, CProfile, API, CPagerHelper, CUrl, CArrayHelper;
+use CController, CControllerResponseData, CControllerResponseFatal, CProfile, API, CPagerHelper, CUrl, CArrayHelper;
 
 class PerformanceReport extends CController {
     public function init(): void {
@@ -32,11 +32,19 @@ class PerformanceReport extends CController {
     }
 
     protected function doAction(): void {
+        $sort_field = $this->getInput('sort', CProfile::get('web.performance.report.sort', 'name'));
+		$sort_order = $this->getInput('sortorder', CProfile::get('web.performance.report.sortorder', ZBX_SORT_UP));
+        CProfile::update('web.performance.report.sort', $sort_field, PROFILE_TYPE_STR);
+		CProfile::update('web.performance.report.sortorder', $sort_order, PROFILE_TYPE_STR);
+
         $data = [
 			'filter_profile' => 'web.performance.report.filter',
 			'filter_active_tab' => CProfile::get('web.performance.report.filter.active', 1),
-            'time_from' => date(ZBX_DATE_TIME, strtotime('yesterday')),
-			'time_to' => date(ZBX_DATE_TIME, strtotime('today'))
+            'time_from' => date(ZBX_DATE_TIME, strtotime('today')),
+			'time_to' => date(ZBX_DATE_TIME, strtotime('now')),
+            'sortField' => $sort_field,
+			'sortOrder' => $sort_order,
+            'action' => $this->getAction()
 		];
 
         $zabbix_server_groupid = API::HostGroup()->get([
@@ -54,7 +62,7 @@ class PerformanceReport extends CController {
 
         $data['zabbix_server_metrics'] = [];
         $zbx_server_metrics = [
-            'host_name' => '',
+            'name' => '',
             'cpu_num' => 0,
             'mem_size' => 0,
             'cpu_util_max' => 0,
@@ -67,8 +75,11 @@ class PerformanceReport extends CController {
         ];
         
         $zabbix_server_hostids = API::Host()->get([
-            'output' => ['hostid'],
-            'groupids' => $zabbix_server_groupid[0]['groupid']
+            'output' => ['hostid', $sort_field],
+            'groupids' => $zabbix_server_groupid[0]['groupid'],
+            'sortfield' => $sort_field,
+            'sortorder' => $sort_order,
+            'preservekeys' => true
         ]);
 
         foreach ($zabbix_server_hostids as $zabbix_server_hostid) {
@@ -88,7 +99,7 @@ class PerformanceReport extends CController {
                 'sortorder' => 'DESC',
                 'limit' => 1
             ]);
-            $zbx_server_metrics['host_name'] = $zabbix_server_hostname[0]['value'];
+            $zbx_server_metrics['name'] = $zabbix_server_hostname[0]['value'];
 
             // cpu num
             $zabbix_server_itemid = API::Item()->get([
@@ -137,8 +148,8 @@ class PerformanceReport extends CController {
             $zabbix_server_cpu_util = API::Trend()->get([
                 'output' => ['value_max', 'value_avg'],
                 'itemids' => $zabbix_server_itemid[0]['itemid'],
-                'time_from' => strtotime('yesterday'),
-                'time_till' => strtotime('today')
+                'time_from' => strtotime('today'),
+                'time_till' => strtotime('now')
             ]);
             if ($zabbix_server_cpu_util == []) {
                 $zbx_server_metrics['cpu_util_max'] = 0;
@@ -160,8 +171,8 @@ class PerformanceReport extends CController {
             $zabbix_server_cpu_load = API::Trend()->get([
                 'output' => ['value_max', 'value_avg'],
                 'itemids' => $zabbix_server_itemid[0]['itemid'],
-                'time_from' => strtotime('yesterday'),
-                'time_till' => strtotime('today')
+                'time_from' => strtotime('today'),
+                'time_till' => strtotime('now')
             ]);
             if ($zabbix_server_cpu_load == []) {
                 $zbx_server_metrics['cpu_load_max'] = 0;
@@ -183,8 +194,8 @@ class PerformanceReport extends CController {
             $zabbix_server_mem_util = API::Trend()->get([
                 'output' => ['value_max', 'value_avg'],
                 'itemids' => $zabbix_server_itemid[0]['itemid'],
-                'time_from' => strtotime('yesterday'),
-                'time_till' => strtotime('today')
+                'time_from' => strtotime('today'),
+                'time_till' => strtotime('now')
             ]);
             if ($zabbix_server_mem_util == []) {
                 $zbx_server_metrics['mem_util_max'] = 0;
@@ -259,8 +270,6 @@ class PerformanceReport extends CController {
 
             array_push($data['zabbix_server_metrics'], $zbx_server_metrics);
         }
-
-        $sort_order = $this->getInput('sortorder', CProfile::get('web.performance.report.sortorder', ZBX_SORT_UP));
 
         // pager
 		$page_num = $this->getInput('page', 1);
