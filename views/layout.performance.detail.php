@@ -104,7 +104,7 @@ $filter = (new CFilter())
 
 $table = (new CTableInfo())
 	->setHeader([
-		(new CColHeader(_('host_name')))->addStyle('width: 15%'),
+		(new CColHeader(_('host_name')))->addStyle('width: 13%'),
 		(new CColHeader(_('cpu_num')))->addStyle('width: 5%'),
 		(new CColHeader(_('mem_size')))->addStyle('width: 5%'),
 		(new CColHeader(_('cpu_util_max')))->addStyle('width: 7%'),
@@ -113,7 +113,7 @@ $table = (new CTableInfo())
 		(new CColHeader(_('cpu_load_avg')))->addStyle('width: 7%'),
 		(new CColHeader(_('mem_util_max')))->addStyle('width: 7%'),
 		(new CColHeader(_('mem_util_avg')))->addStyle('width: 7%'),
-		(new CColHeader(_('analysis')))->addStyle('width: 33%')
+		(new CColHeader(_('analysis')))->addStyle('width: 35%')
 	])
 	->setPageNavigation($data['paging']);
 
