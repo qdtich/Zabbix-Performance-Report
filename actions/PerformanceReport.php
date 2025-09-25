@@ -13,18 +13,18 @@ class PerformanceReport extends CController {
 
     protected function checkInput(): bool {
         $fields = [
-			'sort' => 'in name',
-			'sortorder' => 'in ' . ZBX_SORT_DOWN . ',' . ZBX_SORT_UP,
-			'page' => 'ge 1'
-		];
+            'sort' => 'in name',
+            'sortorder' => 'in ' . ZBX_SORT_DOWN . ',' . ZBX_SORT_UP,
+            'page' => 'ge 1'
+        ];
 
-		$ret = $this->validateInput($fields);
+        $ret = $this->validateInput($fields);
 
-		if (!$ret) {
-			$this->setResponse(new CControllerResponseFatal());
-		}
+        if (!$ret) {
+            $this->setResponse(new CControllerResponseFatal());
+        }
 
-		return $ret;
+        return $ret;
     }
 
     protected function checkPermissions(): bool {
@@ -33,32 +33,19 @@ class PerformanceReport extends CController {
 
     protected function doAction(): void {
         $sort_field = $this->getInput('sort', CProfile::get('web.performance.report.sort', 'name'));
-		$sort_order = $this->getInput('sortorder', CProfile::get('web.performance.report.sortorder', ZBX_SORT_UP));
+        $sort_order = $this->getInput('sortorder', CProfile::get('web.performance.report.sortorder', ZBX_SORT_UP));
         CProfile::update('web.performance.report.sort', $sort_field, PROFILE_TYPE_STR);
-		CProfile::update('web.performance.report.sortorder', $sort_order, PROFILE_TYPE_STR);
+        CProfile::update('web.performance.report.sortorder', $sort_order, PROFILE_TYPE_STR);
 
         $data = [
-			'filter_profile' => 'web.performance.report.filter',
-			'filter_active_tab' => CProfile::get('web.performance.report.filter.active', 1),
+            'filter_profile' => 'web.performance.report.filter',
+            'filter_active_tab' => CProfile::get('web.performance.report.filter.active', 1),
             'time_from' => date(ZBX_DATE_TIME, strtotime('today')),
-			'time_to' => date(ZBX_DATE_TIME, strtotime('now')),
+            'time_to' => date(ZBX_DATE_TIME, strtotime('now')),
             'sortField' => $sort_field,
-			'sortOrder' => $sort_order,
+            'sortOrder' => $sort_order,
             'action' => $this->getAction()
-		];
-
-        $zabbix_server_groupid = API::HostGroup()->get([
-            'output' => ['groupid'],
-            'filter' => [
-                'name' => ['Zabbix servers']
-            ]
-        ]);
-
-        $data['host_group'] = CArrayHelper::renameObjectsKeys(API::HostGroup()->get([
-            'output' => ['groupid', 'name'],
-            'groupids' => $zabbix_server_groupid[0],
-            'preservekeys' => true
-        ]), ['groupid' => 'id']);
+        ];
 
         $data['zabbix_server_metrics'] = [];
         $zbx_server_metrics = [
@@ -73,6 +60,19 @@ class PerformanceReport extends CController {
             'mem_util_avg' => 0,
             'analysis' => ''
         ];
+
+        $zabbix_server_groupid = API::HostGroup()->get([
+            'output' => ['groupid'],
+            'filter' => [
+                'name' => ['Zabbix servers']
+            ]
+        ]);
+
+        $data['host_group'] = CArrayHelper::renameObjectsKeys(API::HostGroup()->get([
+            'output' => ['groupid', 'name'],
+            'groupids' => $zabbix_server_groupid[0],
+            'preservekeys' => true
+        ]), ['groupid' => 'id']);
         
         $zabbix_server_hostids = API::Host()->get([
             'output' => ['hostid', $sort_field],
@@ -86,7 +86,7 @@ class PerformanceReport extends CController {
             // host name
             $zabbix_server_itemid = API::Item()->get([
                 'output' => ['itemid'],
-                'hostids' => $zabbix_server_hostid,
+                'hostids' => $zabbix_server_hostid['hostid'],
                 'search' => [
                     'key_' => 'system.hostname'
                 ]
@@ -104,7 +104,7 @@ class PerformanceReport extends CController {
             // cpu num
             $zabbix_server_itemid = API::Item()->get([
                 'output' => ['itemid'],
-                'hostids' => $zabbix_server_hostid,
+                'hostids' => $zabbix_server_hostid['hostid'],
                 'search' => [
                     'key_' => 'system.cpu.num'
                 ]
@@ -122,7 +122,7 @@ class PerformanceReport extends CController {
             // memory size
             $zabbix_server_itemid = API::Item()->get([
                 'output' => ['itemid'],
-                'hostids' => $zabbix_server_hostid,
+                'hostids' => $zabbix_server_hostid['hostid'],
                 'search' => [
                     'key_' => 'vm.memory.size[total]'
                 ]
@@ -140,7 +140,7 @@ class PerformanceReport extends CController {
             // cpu utilization
             $zabbix_server_itemid = API::Item()->get([
                 'output' => ['itemid'],
-                'hostids' => $zabbix_server_hostid,
+                'hostids' => $zabbix_server_hostid['hostid'],
                 'search' => [
                     'key_' => 'system.cpu.util'
                 ]
@@ -163,7 +163,7 @@ class PerformanceReport extends CController {
             // cpu load
             $zabbix_server_itemid = API::Item()->get([
                 'output' => ['itemid'],
-                'hostids' => $zabbix_server_hostid,
+                'hostids' => $zabbix_server_hostid['hostid'],
                 'search' => [
                     'key_' => 'system.cpu.load[all,avg1]'
                 ]
@@ -186,7 +186,7 @@ class PerformanceReport extends CController {
             // memory utilization
             $zabbix_server_itemid = API::Item()->get([
                 'output' => ['itemid'],
-                'hostids' => $zabbix_server_hostid,
+                'hostids' => $zabbix_server_hostid['hostid'],
                 'search' => [
                     'key_' => 'vm.memory.utilization'
                 ]
@@ -272,10 +272,10 @@ class PerformanceReport extends CController {
         }
 
         // pager
-		$page_num = $this->getInput('page', 1);
-		CPagerHelper::savePage('performance.report', $page_num);
-		$data['page'] = $page_num;
-		$data['paging'] = CPagerHelper::paginate($page_num, $zabbix_server_hostids, $sort_order, (new CUrl('zabbix.php'))->setArgument('action', $this->getAction()));
+        $page_num = $this->getInput('page', 1);
+        CPagerHelper::savePage('performance.report', $page_num);
+        $data['page'] = $page_num;
+        $data['paging'] = CPagerHelper::paginate($page_num, $zabbix_server_hostids, $sort_order, (new CUrl('zabbix.php'))->setArgument('action', $this->getAction()));
 
         $response = new CControllerResponseData($data);
         $this->setResponse($response);

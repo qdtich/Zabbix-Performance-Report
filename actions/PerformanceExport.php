@@ -62,7 +62,7 @@ class PerformanceExport extends CController {
                 // host name
                 $zabbix_server_itemid = API::Item()->get([
                     'output' => ['itemid'],
-                    'hostids' => $zabbix_server_hostid,
+                    'hostids' => $zabbix_server_hostid['hostid'],
                     'search' => [
                         'key_' => 'system.hostname'
                     ]
@@ -80,7 +80,7 @@ class PerformanceExport extends CController {
                 // cpu num
                 $zabbix_server_itemid = API::Item()->get([
                     'output' => ['itemid'],
-                    'hostids' => $zabbix_server_hostid,
+                    'hostids' => $zabbix_server_hostid['hostid'],
                     'search' => [
                         'key_' => 'system.cpu.num'
                     ]
@@ -98,7 +98,7 @@ class PerformanceExport extends CController {
                 // memory size
                 $zabbix_server_itemid = API::Item()->get([
                     'output' => ['itemid'],
-                    'hostids' => $zabbix_server_hostid,
+                    'hostids' => $zabbix_server_hostid['hostid'],
                     'search' => [
                         'key_' => 'vm.memory.size[total]'
                     ]
@@ -116,7 +116,7 @@ class PerformanceExport extends CController {
                 // cpu utilization
                 $zabbix_server_itemid = API::Item()->get([
                     'output' => ['itemid'],
-                    'hostids' => $zabbix_server_hostid,
+                    'hostids' => $zabbix_server_hostid['hostid'],
                     'search' => [
                         'key_' => 'system.cpu.util'
                     ]
@@ -139,7 +139,7 @@ class PerformanceExport extends CController {
                 // cpu load
                 $zabbix_server_itemid = API::Item()->get([
                     'output' => ['itemid'],
-                    'hostids' => $zabbix_server_hostid,
+                    'hostids' => $zabbix_server_hostid['hostid'],
                     'search' => [
                         'key_' => 'system.cpu.load[all,avg1]'
                     ]
@@ -162,7 +162,7 @@ class PerformanceExport extends CController {
                 // memory utilization
                 $zabbix_server_itemid = API::Item()->get([
                     'output' => ['itemid'],
-                    'hostids' => $zabbix_server_hostid,
+                    'hostids' => $zabbix_server_hostid['hostid'],
                     'search' => [
                         'key_' => 'vm.memory.utilization'
                     ]
@@ -472,7 +472,7 @@ class PerformanceExport extends CController {
                 // host name
                 $zabbix_server_itemid = API::Item()->get([
                     'output' => ['itemid'],
-                    'hostids' => $zabbix_server_hostid,
+                    'hostids' => $zabbix_server_hostid['hostid'],
                     'search' => [
                         'key_' => 'system.hostname'
                     ]
@@ -490,7 +490,7 @@ class PerformanceExport extends CController {
                 // cpu num
                 $zabbix_server_itemid = API::Item()->get([
                     'output' => ['itemid'],
-                    'hostids' => $zabbix_server_hostid,
+                    'hostids' => $zabbix_server_hostid['hostid'],
                     'search' => [
                         'key_' => 'system.cpu.num'
                     ]
@@ -508,7 +508,7 @@ class PerformanceExport extends CController {
                 // memory size
                 $zabbix_server_itemid = API::Item()->get([
                     'output' => ['itemid'],
-                    'hostids' => $zabbix_server_hostid,
+                    'hostids' => $zabbix_server_hostid['hostid'],
                     'search' => [
                         'key_' => 'vm.memory.size[total]'
                     ]
@@ -526,7 +526,7 @@ class PerformanceExport extends CController {
                 // cpu utilization
                 $zabbix_server_itemid = API::Item()->get([
                     'output' => ['itemid'],
-                    'hostids' => $zabbix_server_hostid,
+                    'hostids' => $zabbix_server_hostid['hostid'],
                     'search' => [
                         'key_' => 'system.cpu.util'
                     ]
@@ -549,7 +549,7 @@ class PerformanceExport extends CController {
                 // cpu load
                 $zabbix_server_itemid = API::Item()->get([
                     'output' => ['itemid'],
-                    'hostids' => $zabbix_server_hostid,
+                    'hostids' => $zabbix_server_hostid['hostid'],
                     'search' => [
                         'key_' => 'system.cpu.load[all,avg1]'
                     ]
@@ -572,7 +572,7 @@ class PerformanceExport extends CController {
                 // memory utilization
                 $zabbix_server_itemid = API::Item()->get([
                     'output' => ['itemid'],
-                    'hostids' => $zabbix_server_hostid,
+                    'hostids' => $zabbix_server_hostid['hostid'],
                     'search' => [
                         'key_' => 'vm.memory.utilization'
                     ]

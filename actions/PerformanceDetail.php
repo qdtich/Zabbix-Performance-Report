@@ -16,8 +16,8 @@ class PerformanceDetail extends CController {
             'filter_groups' => 'array_db hosts_groups.groupid',
             'filter_hosts' => 'array_db hosts.hostid',
             'sort' => 'in name',
-			'sortorder' => 'in ' . ZBX_SORT_DOWN . ',' . ZBX_SORT_UP,
-			'page' => 'ge 1',
+            'sortorder' => 'in ' . ZBX_SORT_DOWN . ',' . ZBX_SORT_UP,
+            'page' => 'ge 1',
             'filter_time_from' => 'string',
             'filter_time_to' =>	'string',
             'filter_order_by' => 'in 0,1,2,3',
@@ -39,24 +39,24 @@ class PerformanceDetail extends CController {
 
     protected function doAction(): void {
         if ($this->getInput('filter_period') == 0) {
-            $time_from = $this->getInput('filter_time_from');
-            $time_to = $this->getInput('filter_time_to');
+            $time_from = date(ZBX_DATE_TIME, strtotime('today'));
+            $time_to = date(ZBX_DATE_TIME, strtotime('now'));
         }
         elseif ($this->getInput('filter_period') == 1) {
-            $time_from = date(ZBX_DATE_TIME, strtotime('-6 days'));
+            $time_from = date(ZBX_DATE_TIME, strtotime('-7 days'));
             $time_to = date(ZBX_DATE_TIME, strtotime('now'));
         }
         elseif ($this->getInput('filter_period') == 2) {
-            $time_from = date(ZBX_DATE_TIME, strtotime('-14 days'));
+            $time_from = date(ZBX_DATE_TIME, strtotime('-15 days'));
             $time_to = date(ZBX_DATE_TIME, strtotime('now'));
         }
 
         $data = [
-			'filter_profile' => 'web.performance.detail.filter',
-			'filter_active_tab' => CProfile::get('web.performance.detail.filter.active', 1),
+            'filter_profile' => 'web.performance.detail.filter',
+            'filter_active_tab' => CProfile::get('web.performance.detail.filter.active', 1),
             'time_from' => $time_from,
-			'time_to' => $time_to
-		];
+            'time_to' => $time_to
+        ];
 
         $host_ids = [];
 
@@ -77,10 +77,10 @@ class PerformanceDetail extends CController {
             
             $host_groups = $this->getInput('filter_groups');
             $data['host_groups'] = CArrayHelper::renameObjectsKeys(API::HostGroup()->get([
-				'output' => ['groupid', 'name'],
-				'groupids' => $host_groups,
-				'preservekeys' => true
-			]), ['groupid' => 'id']);
+                'output' => ['groupid', 'name'],
+                'groupids' => $host_groups,
+                'preservekeys' => true
+            ]), ['groupid' => 'id']);
 
             $zabbix_server_hostids = API::Host()->get([
                 'output' => ['hostid'],
@@ -94,7 +94,7 @@ class PerformanceDetail extends CController {
                 // host name
                 $zabbix_server_itemid = API::Item()->get([
                     'output' => ['itemid'],
-                    'hostids' => $zabbix_server_hostid,
+                    'hostids' => $zabbix_server_hostid['hostid'],
                     'search' => [
                         'key_' => 'system.hostname'
                     ]
@@ -112,7 +112,7 @@ class PerformanceDetail extends CController {
                 // cpu num
                 $zabbix_server_itemid = API::Item()->get([
                     'output' => ['itemid'],
-                    'hostids' => $zabbix_server_hostid,
+                    'hostids' => $zabbix_server_hostid['hostid'],
                     'search' => [
                         'key_' => 'system.cpu.num'
                     ]
@@ -130,7 +130,7 @@ class PerformanceDetail extends CController {
                 // memory size
                 $zabbix_server_itemid = API::Item()->get([
                     'output' => ['itemid'],
-                    'hostids' => $zabbix_server_hostid,
+                    'hostids' => $zabbix_server_hostid['hostid'],
                     'search' => [
                         'key_' => 'vm.memory.size[total]'
                     ]
@@ -148,7 +148,7 @@ class PerformanceDetail extends CController {
                 // cpu utilization
                 $zabbix_server_itemid = API::Item()->get([
                     'output' => ['itemid'],
-                    'hostids' => $zabbix_server_hostid,
+                    'hostids' => $zabbix_server_hostid['hostid'],
                     'search' => [
                         'key_' => 'system.cpu.util'
                     ]
@@ -171,7 +171,7 @@ class PerformanceDetail extends CController {
                 // cpu load
                 $zabbix_server_itemid = API::Item()->get([
                     'output' => ['itemid'],
-                    'hostids' => $zabbix_server_hostid,
+                    'hostids' => $zabbix_server_hostid['hostid'],
                     'search' => [
                         'key_' => 'system.cpu.load[all,avg1]'
                     ]
@@ -194,7 +194,7 @@ class PerformanceDetail extends CController {
                 // memory utilization
                 $zabbix_server_itemid = API::Item()->get([
                     'output' => ['itemid'],
-                    'hostids' => $zabbix_server_hostid,
+                    'hostids' => $zabbix_server_hostid['hostid'],
                     'search' => [
                         'key_' => 'vm.memory.utilization'
                     ]
@@ -281,10 +281,10 @@ class PerformanceDetail extends CController {
 
             $hosts = $this->getInput('filter_hosts');
             $data['hosts'] = CArrayHelper::renameObjectsKeys(API::Host()->get([
-				'output' => ['hostid', 'name'],
-				'hostids' => $hosts,
-				'preservekeys' => true
-			]), ['hostid' => 'id']);
+                'output' => ['hostid', 'name'],
+                'hostids' => $hosts,
+                'preservekeys' => true
+            ]), ['hostid' => 'id']);
 
             foreach ($hosts as $host) {
                 if (in_array($host, $host_ids)) {
@@ -485,10 +485,10 @@ class PerformanceDetail extends CController {
         elseif ($this->hasInput('filter_groups') and !$this->hasInput('filter_hosts')) {
             $host_groups = $this->getInput('filter_groups');
             $data['host_groups'] = CArrayHelper::renameObjectsKeys(API::HostGroup()->get([
-				'output' => ['groupid', 'name'],
-				'groupids' => $host_groups,
-				'preservekeys' => true
-			]), ['groupid' => 'id']);
+                'output' => ['groupid', 'name'],
+                'groupids' => $host_groups,
+                'preservekeys' => true
+            ]), ['groupid' => 'id']);
 
             $data['hosts'] = [];
 
@@ -518,7 +518,7 @@ class PerformanceDetail extends CController {
                 // host name
                 $zabbix_server_itemid = API::Item()->get([
                     'output' => ['itemid'],
-                    'hostids' => $zabbix_server_hostid,
+                    'hostids' => $zabbix_server_hostid['hostid'],
                     'search' => [
                         'key_' => 'system.hostname'
                     ]
@@ -536,7 +536,7 @@ class PerformanceDetail extends CController {
                 // cpu num
                 $zabbix_server_itemid = API::Item()->get([
                     'output' => ['itemid'],
-                    'hostids' => $zabbix_server_hostid,
+                    'hostids' => $zabbix_server_hostid['hostid'],
                     'search' => [
                         'key_' => 'system.cpu.num'
                     ]
@@ -554,7 +554,7 @@ class PerformanceDetail extends CController {
                 // memory size
                 $zabbix_server_itemid = API::Item()->get([
                     'output' => ['itemid'],
-                    'hostids' => $zabbix_server_hostid,
+                    'hostids' => $zabbix_server_hostid['hostid'],
                     'search' => [
                         'key_' => 'vm.memory.size[total]'
                     ]
@@ -572,7 +572,7 @@ class PerformanceDetail extends CController {
                 // cpu utilization
                 $zabbix_server_itemid = API::Item()->get([
                     'output' => ['itemid'],
-                    'hostids' => $zabbix_server_hostid,
+                    'hostids' => $zabbix_server_hostid['hostid'],
                     'search' => [
                         'key_' => 'system.cpu.util'
                     ]
@@ -595,7 +595,7 @@ class PerformanceDetail extends CController {
                 // cpu load
                 $zabbix_server_itemid = API::Item()->get([
                     'output' => ['itemid'],
-                    'hostids' => $zabbix_server_hostid,
+                    'hostids' => $zabbix_server_hostid['hostid'],
                     'search' => [
                         'key_' => 'system.cpu.load[all,avg1]'
                     ]
@@ -618,7 +618,7 @@ class PerformanceDetail extends CController {
                 // memory utilization
                 $zabbix_server_itemid = API::Item()->get([
                     'output' => ['itemid'],
-                    'hostids' => $zabbix_server_hostid,
+                    'hostids' => $zabbix_server_hostid['hostid'],
                     'search' => [
                         'key_' => 'vm.memory.utilization'
                     ]
@@ -721,10 +721,10 @@ class PerformanceDetail extends CController {
             $hosts = $this->getInput('filter_hosts');
 
             $data['hosts'] = CArrayHelper::renameObjectsKeys(API::Host()->get([
-				'output' => ['hostid', 'name'],
-				'hostids' => $hosts,
-				'preservekeys' => true
-			]), ['hostid' => 'id']);
+                'output' => ['hostid', 'name'],
+                'hostids' => $hosts,
+                'preservekeys' => true
+            ]), ['hostid' => 'id']);
             $data['host_groups'] = [];
             
             foreach ($hosts as $host) {
@@ -927,14 +927,14 @@ class PerformanceDetail extends CController {
         $sort_order = $this->getInput('sortorder', CProfile::get('web.performance.report.sortorder', ZBX_SORT_UP));
 
         // pager
-		$page_num = $this->getInput('page', 1);
-		CPagerHelper::savePage('performance.detail', $page_num);
-		$data['page'] = $page_num;
+        $page_num = $this->getInput('page', 1);
+        CPagerHelper::savePage('performance.detail', $page_num);
+        $data['page'] = $page_num;
         if ($this->hasInput('filter_groups') and $this->hasInput('filter_hosts')) {
-		    $data['paging'] = CPagerHelper::paginate($page_num, $host_ids, $sort_order, (new CUrl('zabbix.php'))->setArgument('action', $this->getAction()));
+            $data['paging'] = CPagerHelper::paginate($page_num, $host_ids, $sort_order, (new CUrl('zabbix.php'))->setArgument('action', $this->getAction()));
         }
         elseif ($this->hasInput('filter_groups') and !$this->hasInput('filter_hosts')) {
-		    $data['paging'] = CPagerHelper::paginate($page_num, $zabbix_server_hostids, $sort_order, (new CUrl('zabbix.php'))->setArgument('action', $this->getAction()));
+            $data['paging'] = CPagerHelper::paginate($page_num, $zabbix_server_hostids, $sort_order, (new CUrl('zabbix.php'))->setArgument('action', $this->getAction()));
         }
         elseif (!$this->hasInput('filter_groups') and $this->hasInput('filter_hosts')) {
             $data['paging'] = CPagerHelper::paginate($page_num, $hosts, $sort_order, (new CUrl('zabbix.php'))->setArgument('action', $this->getAction()));
