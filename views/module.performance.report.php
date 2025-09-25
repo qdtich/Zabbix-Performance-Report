@@ -6,33 +6,33 @@ $this->includeJsFile('host.export.js.php');
 $html_page = (new CHtmlPage())->setTitle(_('Performance report'));
 
 $filter = (new CFilter())
-	->setResetUrl((new CUrl('zabbix.php'))->setArgument('action', 'performance.report'))
+    ->setResetUrl((new CUrl('zabbix.php'))->setArgument('action', 'performance.report'))
     ->setProfile($data['filter_profile'])
-	->setActiveTab($data['filter_active_tab'])
-	->addVar('action', 'performance.detail')
-	->addFilterTab(_('Filter'), [
-		(new CFormGrid())
-			->addItem([
-				new CLabel(_('Host group'), 'filter_groups__ms'),
-				new CFormField(
-					(new CMultiSelect([
-						'name' => 'filter_groups[]',
-						'object_name' => 'hostGroup',
-						'data' => $data['host_group'],
+    ->setActiveTab($data['filter_active_tab'])
+    ->addVar('action', 'performance.detail')
+    ->addFilterTab(_('Filter'), [
+        (new CFormGrid())
+            ->addItem([
+                new CLabel(_('Host group'), 'filter_groups__ms'),
+                new CFormField(
+                    (new CMultiSelect([
+                        'name' => 'filter_groups[]',
+                        'object_name' => 'hostGroup',
+                        'data' => $data['host_group'],
                         'popup' => [
-							'parameters' => [
-								'srctbl' => 'host_groups',
-								'srcfld1' => 'groupid',
-								'dstfrm' => 'zbx_filter',
-								'dstfld1' => 'filter_groups_',
-								'with_hosts' => true,
-								'editable' => true,
-								'enrich_parent_groups' => true
-							]
-						]
-					]))->setWidth(ZBX_TEXTAREA_MEDIUM_WIDTH)
-				)
-			])
+                            'parameters' => [
+                                'srctbl' => 'host_groups',
+                                'srcfld1' => 'groupid',
+                                'dstfrm' => 'zbx_filter',
+                                'dstfld1' => 'filter_groups_',
+                                'with_hosts' => true,
+                                'editable' => true,
+                                'enrich_parent_groups' => true
+                            ]
+                        ]
+                    ]))->setWidth(ZBX_TEXTAREA_MEDIUM_WIDTH)
+                )
+            ])
             ->addItem([
                 new CLabel(_('Host'), 'filter_hosts__ms'),
                 new CFormField(
@@ -64,18 +64,18 @@ $filter = (new CFilter())
             ->addItem(
                 new CFormField((new CLabel(_('\'host_name\' is in asc order, performance metrics are in desc order.')))->setAsteriskMark())
             ),
-		(new CFormGrid())
-			->addItem([
-				(new CLabel(_('From'), 'filter_time_from')),
+        (new CFormGrid())
+            ->addItem([
+                (new CLabel(_('From'), 'filter_time_from')),
                 new CFormField(
                     (new CDateSelector('filter_time_from', $data['time_from']))
                         ->setDateFormat(ZBX_DATE_TIME)
                         ->setPlaceholder(_('YYYY-MM-DD hh:mm'))
                         ->setAriaRequired()
                 )
-			])
+            ])
             ->addItem([
-				(new CLabel(_('To'), 'filter_time_to')),
+                (new CLabel(_('To'), 'filter_time_to')),
                 new CFormField(
                     (new CDateSelector('filter_time_to', $data['time_to']))
                         ->setDateFormat(ZBX_DATE_TIME)
@@ -91,25 +91,25 @@ $filter = (new CFilter())
                     ->addValue(_('15 days'), 2)
                     ->setModern(true)
             ])
-	]);
+    ]);
 
 $action_url = (new CUrl('zabbix.php'))->setArgument('action', $data['action']);
 $header_sortable_host_name = make_sorting_header(_('host_name'), 'name', $data['sortField'], $data['sortOrder'], $action_url->getUrl());
 
 $table = (new CTableInfo())
-	->setHeader([
-		$header_sortable_host_name->addStyle('width: 13%'),
-		(new CColHeader(_('cpu_num')))->addStyle('width: 5%'),
-		(new CColHeader(_('mem_size')))->addStyle('width: 5%'),
-		(new CColHeader(_('cpu_util_max')))->addStyle('width: 7%'),
-		(new CColHeader(_('cpu_util_avg')))->addStyle('width: 7%'),
-		(new CColHeader(_('cpu_load_max')))->addStyle('width: 7%'),
-		(new CColHeader(_('cpu_load_avg')))->addStyle('width: 7%'),
-		(new CColHeader(_('mem_util_max')))->addStyle('width: 7%'),
-		(new CColHeader(_('mem_util_avg')))->addStyle('width: 7%'),
-		(new CColHeader(_('analysis')))->addStyle('width: 35%')
-	])
-	->setPageNavigation($data['paging']);
+    ->setHeader([
+        $header_sortable_host_name->addStyle('width: 13%'),
+        (new CColHeader(_('cpu_num')))->addStyle('width: 5%'),
+        (new CColHeader(_('mem_size')))->addStyle('width: 5%'),
+        (new CColHeader(_('cpu_util_max')))->addStyle('width: 7%'),
+        (new CColHeader(_('cpu_util_avg')))->addStyle('width: 7%'),
+        (new CColHeader(_('cpu_load_max')))->addStyle('width: 7%'),
+        (new CColHeader(_('cpu_load_avg')))->addStyle('width: 7%'),
+        (new CColHeader(_('mem_util_max')))->addStyle('width: 7%'),
+        (new CColHeader(_('mem_util_avg')))->addStyle('width: 7%'),
+        (new CColHeader(_('analysis')))->addStyle('width: 35%')
+    ])
+    ->setPageNavigation($data['paging']);
 
 foreach ($data['zabbix_server_metrics'] as $zabbix_server_metric) {
     $table->addRow([
